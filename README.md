@@ -1,42 +1,9 @@
 # woia-re-property-data
 
-Portable Agent Plugin for Scoped Property, Mandate and Listing versioned contracts with source and authority guards..
+Version 0.5.0 thin shared provider for Property inventory, acyclic unit relations, Mandate versions/authority and approved Listing versions. These facts remain separate from rights claims and remote publications.
 
-## Capability
+Portable entry: [Skill](skills/woia-re-property-data/SKILL.md). [Operation contract](skills/woia-re-property-data/references/contract.md). Pure helper implements scoped source-authority, immutable versions, current acceptance, revision and duplicate-operation checks. No storage/backend/MCP adapter is qualified; no external contact or financial effects.
 
-~~~text
-DISCOVER -> DECIDE -> IMPLEMENT -> VALIDATE -> REPORT
-~~~
+## Local authoring
 
-The plugin adapts to the repository it operates on without requiring the consumer to adopt WOIA's authoring toolchain.
-
-## Portable package
-
-~~~text
-plugin.json
-README.md
-CHANGELOG.md
-LICENSE
-skills/**
-# optional source diagnostic when retained by the repository
-CHECKSUMS.sha256
-~~~
-
-`CHECKSUMS.sha256` is optional source evidence, not a required portable/release artifact.
-
-Add `mcp.json` only if the capability genuinely requires MCP.
-
-## Consumer requirements
-
-Document only genuine capability/runtime requirements here. Do not list maintenance Node/pnpm/Mise/Docker unless the portable capability itself truly needs them.
-
-## Development
-
-~~~text
-mise install
-mise run bootstrap
-mise run doctor
-mise run ci:fast
-mise run ci:extended
-mise run release:check
-~~~
+Use mise run bootstrap and mise run doctor. Run mise run ci:fast for manifest/payload/schema and maintenance/domain tests. Commit a clean candidate; from Ecosystem v0.5.4 run mise run plugin:certify-thin --repo <absolute-provider-path>. Central thin certification is the candidate gate. Full-profile release:check and container jobs are dormant template tools, not substitutes for thin certification; this implementation does not change maintenance portability. Publication/admission remain separate human gates.
