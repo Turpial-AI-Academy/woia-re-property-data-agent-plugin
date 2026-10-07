@@ -17,11 +17,13 @@ function access(state, command, context) {
   assert(actions.includes(command.action),'ACTION_UNSUPPORTED');
   assert(text(context.actor_ref) && text(context.purpose),'AUTHENTICATION_REQUIRED');
   const grant = context.grant;
+  assert(grant?.current===true && grant.hold===false && grant.emergency_stop===false,'AUTHORITY_DENIED');
   assert(grant && grant.actor_ref === context.actor_ref && grant.org_id === command.org_id && grant.purpose === context.purpose && grant.actions?.includes(command.action) && grant.targets?.includes(command.target_id) && text(grant.policy_ref) && text(grant.revision) && grant.revoked === false && Number.isFinite(context.now) && grant.valid_from <= context.now && context.now < grant.valid_until,'AUTHORITY_DENIED');
   assert(command.fields?.length && command.fields.every(f => grant.fields?.includes(f)),'FIELD_SCOPE');
 }
 function source(command, context, family) {
   const map = context.source_map;
+  assert(map?.valid_from<=context.now && context.now<map.valid_until,'SOURCE_AUTHORITY_BLOCKED');
   const rule = map?.entries?.find(r => r.family === family && r.target_id === command.target_id);
   assert(map?.org_id === command.org_id && text(map.version) && text(map.digest) && map.current === true && rule?.writer === writer && rule.conflict === false && Number.isFinite(rule.observed_at) && Number.isFinite(rule.max_age) && rule.max_age >= 0 && context.now >= rule.observed_at && context.now - rule.observed_at <= rule.max_age,'SOURCE_AUTHORITY_BLOCKED');
   assert(text(command.evidence_ref) && text(command.source_ref) && rule.source_ref === command.source_ref,'SOURCE_EVIDENCE_REQUIRED');

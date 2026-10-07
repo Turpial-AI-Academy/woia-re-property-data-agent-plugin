@@ -7,7 +7,7 @@ const now=Date.parse('2026-10-07T12:00:00Z');
 function fixture(action='property.create',target_id='p1',data={kind:'unit'}) {
  const command={org_id:'org',action,target_id,data,fields:Object.keys(data),operation_key:'op-'+action+'-'+target_id,expected_revision:0,evidence_ref:'e1',source_ref:'s1'};
  const family=action.startsWith('property.')?'Property':action.startsWith('mandate.')?'Mandate':'Listing';
- const context={org_id:'org',actor_ref:'actor',purpose:'intake',now,grant:{org_id:'org',actor_ref:'actor',purpose:'intake',actions:[action],targets:[target_id],references:['p1','p2','m1','absent'],fields:[...Object.keys(data),'property_id','history'],policy_ref:'policy-v1',revision:'g1',revoked:false,valid_from:now-1,valid_until:now+100},source_map:{org_id:'org',version:'sm1',digest:'map-digest',current:true,entries:[{family,target_id,writer:'woia-re-property-data',conflict:false,observed_at:now,max_age:1000,source_ref:'s1'}]}};
+ const context={org_id:'org',actor_ref:'actor',purpose:'intake',now,grant:{org_id:'org',actor_ref:'actor',purpose:'intake',actions:[action],targets:[target_id],references:['p1','p2','m1','absent'],fields:[...Object.keys(data),'property_id','history'],policy_ref:'policy-v1',revision:'g1',current:true,hold:false,emergency_stop:false,revoked:false,valid_from:now-1,valid_until:now+100},source_map:{org_id:'org',version:'sm1',digest:'map-digest',current:true,valid_from:now-1,valid_until:now+100,entries:[{family,target_id,writer:'woia-re-property-data',conflict:false,observed_at:now,max_age:1000,source_ref:'s1'}]}};
  return {command,context};
 }
 function run(state,action,target,data,kind){const f=fixture(action,target,data);f.command.expected_revision=state.revision;f.context.subject_refs=[{org_id:'org',subject_id:'person1',provider:'woia-identity',version_ref:'id-v1',resolved:true}];if(action==='property.unit.link')f.context.grant.targets.push(data.child_property_id);if(kind)f.context.acceptance={org_id:'org',target_id:target,version_no:data.version_no,kind,actor_ref:'owner',evidence_ref:'accepted-e1',payload_digest:digest(data),source_map_version:'sm1',authority_ref:'competent-scope-v1',record_digest:digest((state.mandates.find(m=>m.mandate_id===target)??state.listings.find(l=>l.listing_id===target))?.versions.at(-1)??{}),revoked:false,valid_from:now-1,valid_until:now+100};return execute(state,f.command,f.context);}
@@ -21,6 +21,9 @@ test('exact duplicate returns original without new revision',()=>{const f=fixtur
 test('reused operation with changed payload is rejected',()=>{const f=fixture(),r=execute(emptyState('org'),f.command,f.context);f.command.data.kind='building';assert.throws(()=>execute(r.state,f.command,f.context),/COLLISION/);});
 for(const [name,change,error] of [
  ['foreign organization',f=>f.context.org_id='other','ORG_SCOPE'],
+ ['held grant',f=>f.context.grant.hold=true,'AUTHORITY_DENIED'],
+ ['emergency stop',f=>f.context.grant.emergency_stop=true,'AUTHORITY_DENIED'],
+ ['inactive source map',f=>f.context.source_map.valid_from=now+1,'SOURCE_AUTHORITY_BLOCKED'],
  ['missing grant',f=>delete f.context.grant,'AUTHORITY_DENIED'],
  ['revoked grant',f=>f.context.grant.revoked=true,'AUTHORITY_DENIED'],
  ['expired grant',f=>f.context.now+=100,'AUTHORITY_DENIED'],
