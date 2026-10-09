@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "woia-re-property-data",
-  "version": "0.5.0",
+  "version": "0.5.6",
   "description": "Scoped Property, Mandate and Listing versioned contracts with source and authority guards.",
   "author": {
     "name": "Turpial AI Academy",
@@ -10,5 +10,8 @@
   "homepage": "https://github.com/Turpial-AI-Academy/woia-re-property-data-agent-plugin",
   "repository": "https://github.com/Turpial-AI-Academy/woia-re-property-data-agent-plugin",
   "license": "MIT",
-  "keywords": ["agent-plugin", "woia-re-property-data"]
+  "keywords": [
+    "agent-plugin",
+    "woia-re-property-data"
+  ]
 }

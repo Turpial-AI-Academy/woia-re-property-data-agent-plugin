@@ -1,6 +1,6 @@
 # Source contract and enforcement
 
-Permanent semantic source: Turpial-AI-Academy/woia-re-domain-contracts-agent-plugin@v0.5.0, commit fb1c8a3f7fb116f2a00daf05ae335fdfbc7c3f3f / tree f3ff5a68a0d5df2e615a650eddc313c9585b7f08. Its domain-source-contract and authority-contract resources define Property/Mandate/Listing, source authority and effect guards. This is a semantic reference, not a hard package dependency. Canonical logical relations stay in that permanent owner; this provider implements operation guards without copying its 85-relation catalog or inventing a DBMS.
+Permanent semantic source: Turpial-AI-Academy/woia-re-domain-contracts-agent-plugin@v0.5.6, commit fb1c8a3f7fb116f2a00daf05ae335fdfbc7c3f3f / tree f3ff5a68a0d5df2e615a650eddc313c9585b7f08. Its domain-source-contract and authority-contract resources define Property/Mandate/Listing, source authority and effect guards. This is a semantic reference, not a hard package dependency. Canonical logical relations stay in that permanent owner; this provider implements operation guards without copying its 85-relation catalog or inventing a DBMS.
 
 ## Operations
 
