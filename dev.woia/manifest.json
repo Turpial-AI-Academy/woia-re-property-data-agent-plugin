@@ -29,8 +29,8 @@
     "repository": "Turpial-AI-Academy/woia-re-domain-contracts-agent-plugin",
     "version": "0.5.7",
     "ref": "v0.5.7",
-    "commit": "68686d625c6d5caf45042d23d81770f2a178c92d",
-    "tree": "18ca26a7fb8caaa245a91ac499845ae4fefa4eae",
+    "commit": "33af7010ad2e9a71aca576c27914619a3f9d7f34",
+    "tree": "639afce801dbd61153cd919a23c1e4f5de4612e4",
     "semantics_only": true,
     "hard_dependency": false
   }
